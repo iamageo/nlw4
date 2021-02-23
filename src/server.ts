@@ -1,25 +1,11 @@
 import 'reflect-metadata'
 import express from 'express'
 import './database'
+import { router } from './router'
 
 const app = express()
 
-/*
- * GET -> BUSCA
- * POST -> SALVAR
- * PUT -> ALTERAR
- * DELETE -> DELETAR
- * PATCH -> ALTERAÇÃO ESPECÍFICA
- */
-
- app.get("/", (request, response)=> {
-     return response.json({ message: "olá mundo!" })
- })
-
- app.post("/", (request, response) => {
-    return response.json({ message: "os dados foram salvos com sucesso!" })
-
- })
+app.use(router)
 
 app.listen(3333, () => {
     console.log("-------------------------------")
