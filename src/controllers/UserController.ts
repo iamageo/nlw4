@@ -1,13 +1,30 @@
 
 import {Request, Response} from 'express'
+import { getRepository } from 'typeorm'
+import { User } from '../models/User'
 
 
 class UserController {
     async create(request: Request, response: Response) {
-        const body = request.body
-        console.log(body)
+        const {name, email} = request.body
+        
+        const usersRepository = getRepository(User);
 
-        return response.send()
+        const userAlreadyExist = await usersRepository.findOne({
+            email
+        })
+
+        if(userAlreadyExist){
+            return response.status(400).json({
+                error: "user already exists"
+            })
+        }
+        const user = usersRepository.create({
+            name, email
+        })
+        await usersRepository.save(user)
+
+        return response.json(user)
 
     }
 }
